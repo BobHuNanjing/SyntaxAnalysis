@@ -17,6 +17,7 @@ public class DemoTest {
         visitor.visit(tree);
         ASPRule ruleToComplete = visitor.ASPRuleGetter();
         System.out.println(ruleToComplete.toString());
+        visitor.getLiteralMap();
 
     }
 }

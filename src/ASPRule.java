@@ -1,47 +1,49 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class ASPRule {
-    private String head;
-    private ArrayList<String> posbody = new ArrayList<>();
-    private ArrayList<String> negbody;
-    private ArrayList<ArrayList<String>> body;
-    private HashMap<String,Integer> literals;
+    private HashSet<Integer> head = new HashSet<>();
+    private HashSet<Integer> posbody = new HashSet<>();
+    private HashSet<Integer> negbody = new HashSet<>();
+    private HashSet<HashSet<Integer>> body = new HashSet<>();
+    private HashMap<String,Integer> literals = new HashMap<>();
 
-    public void setHead(String head) {
-        this.head = head;
+    public void setHead(int headIndex) {
+        this.head.add(headIndex);
     }
 
-    public void setPosbody(String posLiteral) {
+    public void setPosbody(int posLiteral) {
         posbody.add(posLiteral);
     }
 
-    public void setNegbody(ArrayList<String> negbody) {
-        this.negbody = negbody;
+    public void setNegbody(int negLiteral) {
+        negbody.add(negLiteral);
     }
 
-    public void setBody(ArrayList<ArrayList<String>> body) {
-        this.body = body;
+    public void setBody() {
+        body.add(getPosbody());
+        body.add(getNegbody());
     }
 
-    public void setLiterals(HashMap<String, Integer> literals) {
-        this.literals = literals;
+    public void setLiterals(String literal,int idx) {
+        this.literals.put(literal,idx);
     }
 
-    public String getHead() {
-        return head;
+    public HashSet<Integer> getHead() {
+        return this.head;
     }
 
-    public ArrayList<String> getPosbody() {
+    public HashSet<Integer> getPosbody() {
         return posbody;
     }
 
-    public ArrayList<String> getNegbody() {
+    public HashSet<Integer> getNegbody() {
         return negbody;
     }
 
-    public ArrayList<ArrayList<String>> getBody() {
+    public HashSet<HashSet<Integer>> getBody() {
         return body;
     }
 
@@ -51,6 +53,8 @@ public class ASPRule {
 
     @Override
     public String toString() {
-        return "head:"+this.getHead()+",body:"+this.getPosbody();
+        return "head:"+this.getHead()+",posBody:"+this.getPosbody()+",negBody:"+this.getNegbody();
     }
+
+
 }
