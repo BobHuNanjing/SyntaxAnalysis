@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * @author bobhu
+ * 2018/12/19
+ * function: single rule head/body/posBody/negBody extraction
+ */
 public class ASPRuleExtractor extends LPMLNBaseVisitor {
 
     private ASPRule simpleRule = new ASPRule();
-    private HashSet<String> literals  = new HashSet<String>();
-    private HashMap<String,Integer> literalMap = new HashMap<>();
-
-    @Override
-    public Object visitLiteral(LPMLNParser.LiteralContext ctx) {
-        //ctx.atom()
-        return super.visitLiteral(ctx);
-    }
+    private HashSet<String> literals = new HashSet<>();
+    private HashMap<String, Integer> literalMap = new HashMap<>();
 
     @Override
     public Object visitHead(LPMLNParser.HeadContext ctx) {
@@ -25,20 +24,16 @@ public class ASPRuleExtractor extends LPMLNBaseVisitor {
     }
 
     private int getIndexOrAddItemsIntoLiteralAndLiteralMap(String head) {
-        int headIdx = 0;
-        if(literalMap.containsKey(head))
-        {
+        int headIdx;
+        if (literalMap.containsKey(head)) {
             headIdx = literalMap.get(head);
-        }
-        else
-        {
-            literalMap.put(head,literalMap.size()-1);
-            headIdx = literalMap.size()-1;
+        } else {
+            literalMap.put(head, literalMap.size());
+            headIdx = literalMap.size() - 1;
         }
 
         return headIdx;
     }
-
 
 
     @Override
@@ -49,10 +44,25 @@ public class ASPRuleExtractor extends LPMLNBaseVisitor {
 
     @Override
     public Object visitExtended_literal(LPMLNParser.Extended_literalContext ctx) {
-        int literalIdx;
-        literalIdx = getIndexOrAddItemsIntoLiteralAndLiteralMap(ctx.literal().getText());
-        simpleRule.setLiterals(ctx.literal().getText(),literalIdx);
+        int litIdx;
+
+        // 下方是正原子(extended不是pos就是neg）
+        if(ctx.literal()!=null) {
+            litIdx = getIndexOrAddItemsIntoLiteralAndLiteralMap(ctx.literal().getText());
+            simpleRule.setPosbody(litIdx);
+        }else{
+            litIdx = getIndexOrAddItemsIntoLiteralAndLiteralMap(ctx.default_literal().literal().getText());
+            simpleRule.setNegbody(litIdx);
+        }
         return super.visitExtended_literal(ctx);
+    }
+
+    @Override
+    public Object visitLiteral(LPMLNParser.LiteralContext ctx) {
+        int literalIdx;
+        literalIdx = getIndexOrAddItemsIntoLiteralAndLiteralMap(ctx.getText());
+        simpleRule.setLiterals(ctx.getText(), literalIdx);
+        return super.visitLiteral(ctx);
     }
 
     @Override
@@ -65,13 +75,13 @@ public class ASPRuleExtractor extends LPMLNBaseVisitor {
         return super.visitLpmln_rule(ctx);
     }
 
-    public ASPRule ASPRuleGetter()
-    {
+    ASPRule ASPRuleGetter() {
         return this.simpleRule;
     }
-    
-    public void getLiteralMap()
-    {
+
+
+
+    void getLiteralMap() {
         System.out.println(this.literalMap);
     }
 }

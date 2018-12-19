@@ -2,6 +2,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class ASPRule {
     private HashSet<Integer> head = new HashSet<>();
@@ -10,15 +11,21 @@ public class ASPRule {
     private HashSet<HashSet<Integer>> body = new HashSet<>();
     private HashMap<String,Integer> literals = new HashMap<>();
 
-    public void setHead(int headIndex) {
+    void setHead(int headIndex) {
         this.head.add(headIndex);
     }
 
-    public void setPosbody(int posLiteral) {
+    void setPosbody(int posLiteral) {
+    /*    for (Map.Entry<String, Integer> entry : literals.entrySet()) {
+            if(!negbody.contains(entry.getValue())){
+                //System.out.println(entry.getValue());
+                posbody.add(entry.getValue());
+            }
+        }*/
         posbody.add(posLiteral);
     }
 
-    public void setNegbody(int negLiteral) {
+    void setNegbody(int negLiteral) {
         negbody.add(negLiteral);
     }
 
@@ -27,19 +34,19 @@ public class ASPRule {
         body.add(getNegbody());
     }
 
-    public void setLiterals(String literal,int idx) {
+    void setLiterals(String literal, int idx) {
         this.literals.put(literal,idx);
     }
 
-    public HashSet<Integer> getHead() {
+    private HashSet<Integer> getHead() {
         return this.head;
     }
 
-    public HashSet<Integer> getPosbody() {
+    private HashSet<Integer> getPosbody() {
         return posbody;
     }
 
-    public HashSet<Integer> getNegbody() {
+    private HashSet<Integer> getNegbody() {
         return negbody;
     }
 

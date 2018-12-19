@@ -6,8 +6,8 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class DemoTest {
-    public static void main(String[] args) throws Exception{
-        String program = "bird(X):-fly(X),animal(X).";
+    public static void main(String[] args){
+        String program = "bird(X):-fly(X), not animal(X), not stupid(X).";
         CharStream input = CharStreams.fromString(program);
         LPMLNLexer lexer = new LPMLNLexer(input);
         CommonTokenStream token = new CommonTokenStream(lexer);
