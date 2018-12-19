@@ -3,18 +3,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ASPRule {
-    private ArrayList<String> head;
-    private ArrayList<String> posbody;
+    private String head;
+    private ArrayList<String> posbody = new ArrayList<>();
     private ArrayList<String> negbody;
     private ArrayList<ArrayList<String>> body;
     private HashMap<String,Integer> literals;
 
-    public void setHead(ArrayList<String> head) {
+    public void setHead(String head) {
         this.head = head;
     }
 
-    public void setPosbody(ArrayList<String> posbody) {
-        this.posbody = posbody;
+    public void setPosbody(String posLiteral) {
+        posbody.add(posLiteral);
     }
 
     public void setNegbody(ArrayList<String> negbody) {
@@ -29,7 +29,7 @@ public class ASPRule {
         this.literals = literals;
     }
 
-    public ArrayList<String> getHead() {
+    public String getHead() {
         return head;
     }
 
@@ -47,5 +47,10 @@ public class ASPRule {
 
     public HashMap<String, Integer> getLiterals() {
         return literals;
+    }
+
+    @Override
+    public String toString() {
+        return "head:"+this.getHead()+",body:"+this.getPosbody();
     }
 }
