@@ -1,15 +1,20 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 public class ASPRule {
     private HashSet<Integer> head = new HashSet<>();
     private HashSet<Integer> posbody = new HashSet<>();
     private HashSet<Integer> negbody = new HashSet<>();
-    private HashSet<HashSet<Integer>> body = new HashSet<>();
+    private ArrayList<HashSet<Integer>> body = new ArrayList<>();
     private HashMap<String,Integer> literals = new HashMap<>();
+    //默认权重为INF
+    private int weight = Integer.MAX_VALUE;
+
+    ASPRule() {
+        body.add(posbody);
+        body.add(negbody);
+    }
 
     void setHead(int headIndex) {
         this.head.add(headIndex);
@@ -29,10 +34,6 @@ public class ASPRule {
         negbody.add(negLiteral);
     }
 
-    public void setBody() {
-        body.add(getPosbody());
-        body.add(getNegbody());
-    }
 
     void setLiterals(String literal, int idx) {
         this.literals.put(literal,idx);
@@ -50,17 +51,26 @@ public class ASPRule {
         return negbody;
     }
 
-    public HashSet<HashSet<Integer>> getBody() {
+    ArrayList<HashSet<Integer>> getBody() {
         return body;
     }
 
-    public HashMap<String, Integer> getLiterals() {
+    private int getWeight() {
+        return weight;
+    }
+
+    void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    private HashMap<String, Integer> getLiterals() {
         return literals;
     }
 
     @Override
     public String toString() {
-        return "head:"+this.getHead()+",posBody:"+this.getPosbody()+",negBody:"+this.getNegbody();
+        return "head:"+this.getHead()+"body:"+this.getBody()+",posBody:"+this.getPosbody()+
+                ",negBody:"+this.getNegbody()+"weight:"+this.getWeight();
     }
 
 
